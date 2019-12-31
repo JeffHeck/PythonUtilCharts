@@ -297,7 +297,8 @@ def plotHistogram(aVector, aSave=False, aSaveName='', aXLabel='',
         ax.get_xaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: aXLabelFormat.format(int(x))))
     if aSave:
         fig.savefig(aSaveName)
-        
+    plt.close(fig)        
+
 
 # General func to plot line chart
 def plotLine(aPlotDF, aX, aY, aTitle, aXTitle, aYTitle,
@@ -308,6 +309,7 @@ def plotLine(aPlotDF, aX, aY, aTitle, aXTitle, aYTitle,
              aXLabelRotation=30,
              aXGrid=True, aYGrid=True,
              aUseLimit=False, aLimit=[0,20000],
+             aUseYLabelFormat=True,
              aLabelFontSize=12):
     fig, ax = plt.subplots()
     plt.style.use(aStyle)
@@ -320,13 +322,16 @@ def plotLine(aPlotDF, aX, aY, aTitle, aXTitle, aYTitle,
         i = i + 1
     # Add the highlighted schools and legend
     fig.set_size_inches(12, 8)
-    ax.set_xlabel(aXTitle, fontsize=16)
+    ax.set_xlabel(aXTitle, fontsize=aLabelFontSize)
+    ax.xaxis.set_tick_params(labelsize=aLabelFontSize)
+    ax.yaxis.set_tick_params(labelsize=aLabelFontSize)
     if (aXTickLabelsOn==False):
         ax.get_xaxis().set_ticklabels([])
     plt.xticks(rotation=aXLabelRotation)
-    ax.set_ylabel(aYTitle, fontsize=16)
+    ax.set_ylabel(aYTitle, fontsize=aLabelFontSize)
     #ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: aYLabelFormat.format(int(x))))
-    ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: aYLabelFormat.format(int(x))))
+    if aUseYLabelFormat:
+        ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: aYLabelFormat.format(int(x))))
     ax.yaxis.grid(aYGrid)
     ax.xaxis.grid(aXGrid)
     if aUseLimit:
@@ -340,6 +345,7 @@ def plotLine(aPlotDF, aX, aY, aTitle, aXTitle, aYTitle,
     # Save plot
     saveFileName = (aSaveFilename)
     fig.savefig(saveFileName)
+    plt.close(fig)
 
 
 # Plot line chart for multiple DFs
